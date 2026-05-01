@@ -148,7 +148,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 function renderShell() {
   document.querySelector('#app').innerHTML = `
-    <header class="site-header">
+    <header class="site-header" id="top">
+      <div class="top-strip">
+        <div class="top-strip-inner">
+          <span>San José, Costa Rica</span>
+          <span>Reservas de paseos, perfiles de perros y seguimiento en un solo lugar.</span>
+        </div>
+      </div>
+
       <nav class="nav-shell" aria-label="Navegación principal">
         <a href="#inicio" class="brand" aria-label="PaseoCan inicio">
           <span class="brand-mark">PC</span>
@@ -163,41 +170,100 @@ function renderShell() {
         </button>
 
         <div class="nav-links" id="navLinks">
+          <a href="#inicio">Inicio</a>
+          <a href="#destacados">Servicios</a>
+          <div class="nav-dropdown">
+            <button type="button">Categorías</button>
+            <div class="dropdown-menu" aria-label="Categorías de servicio">
+              <a href="#reserva">Reservar paseo</a>
+              <a href="#registros">Registrar perro</a>
+              <a href="#paseadores">Paseadores</a>
+              <a href="#panel">Panel interno</a>
+            </div>
+          </div>
           <a href="#como-funciona">Cómo funciona</a>
-          <a href="#reserva">Reservar</a>
-          <a href="#paseadores">Paseadores</a>
-          <a href="#panel">Panel</a>
-          <a href="#reserva" class="nav-cta">Reservar paseo</a>
+          <a href="#blog">Blog</a>
+          <a href="#footer">Contacto</a>
+        </div>
+
+        <div class="nav-actions">
+          <button class="icon-action" id="searchToggle" type="button" aria-label="Buscar">⌕</button>
+          <button class="request-toggle" id="drawerToggle" type="button" aria-label="Ver solicitudes">
+            <span>Solicitudes</span>
+            <strong id="cartBadge">0</strong>
+          </button>
+          <button class="nav-cta" id="quickReserve" type="button">Reservar</button>
         </div>
       </nav>
     </header>
 
+    <aside class="search-panel" id="searchPanel" aria-label="Búsqueda rápida">
+      <div class="search-box">
+        <div class="panel-heading clean">
+          <div>
+            <span class="eyebrow">Buscar</span>
+            <h3>Encontrá rápido lo que necesitás</h3>
+          </div>
+          <button class="icon-btn" id="searchClose" type="button" aria-label="Cerrar búsqueda">×</button>
+        </div>
+        <form id="searchForm" class="search-form">
+          <input id="siteSearch" type="search" placeholder="Ej: reservar, perro, paseadores, agenda..." />
+          <button class="primary-btn" type="submit">Ir</button>
+        </form>
+        <div class="quick-links">
+          <button type="button" data-scroll-target="reserva">Reservar paseo</button>
+          <button type="button" data-scroll-target="registros">Registrar perro</button>
+          <button type="button" data-scroll-target="paseadores">Ver paseadores</button>
+          <button type="button" data-scroll-target="panel">Panel interno</button>
+        </div>
+      </div>
+    </aside>
+
+    <aside class="request-drawer" id="requestDrawer" aria-label="Solicitudes recientes">
+      <div class="drawer-head">
+        <div>
+          <span class="eyebrow">Solicitudes</span>
+          <h3>Paseos recientes</h3>
+        </div>
+        <button class="icon-btn" id="drawerClose" type="button" aria-label="Cerrar solicitudes">×</button>
+      </div>
+      <div id="requestDrawerList" class="drawer-list"></div>
+      <button class="primary-btn full" type="button" data-scroll-target="reserva">Crear nueva reserva</button>
+    </aside>
+
     <main>
-      <section id="inicio" class="hero-section">
-        <div class="hero-copy">
-          <span class="eyebrow">San José, Costa Rica</span>
-          <h1>Paseos confiables para tu perro, cuando lo necesitás.</h1>
-          <p>Registrá a tu mascota, reservá un paseo y gestioná solicitudes con una experiencia simple, clara y pensada para dueños y paseadores.</p>
+      <section id="inicio" class="hero-market" data-reveal>
+        <div class="hero-content">
+          <span class="eyebrow">Servicio de paseos para perros</span>
+          <h1>Paseos listos, perros felices y reservas más simples.</h1>
+          <p>Una plataforma para registrar mascotas, coordinar paseadores y dar seguimiento a cada solicitud desde una experiencia clara, visual y responsive.</p>
           <div class="hero-actions">
             <button class="primary-btn" id="jumpBooking" type="button">Reservar paseo</button>
             <button class="secondary-btn" id="jumpDogRegistration" type="button">Registrar mi perro</button>
           </div>
-
-          <div class="trust-row" aria-label="Beneficios principales">
+          <div class="hero-badges" aria-label="Beneficios principales">
             <span>Agenda organizada</span>
+            <span>Datos centralizados</span>
             <span>Paseadores disponibles</span>
-            <span>Seguimiento de solicitudes</span>
           </div>
         </div>
 
-        <picture class="hero-media">
-          <source media="(max-width: 680px)" srcset="${ASSETS.heroMobile}" type="image/webp">
-          <source srcset="${ASSETS.heroDesktop}" type="image/webp">
-          <img src="${ASSETS.heroDesktopFallback}" alt="Perro feliz durante un paseo al aire libre" loading="eager">
-        </picture>
+        <div class="hero-collage" aria-label="Galería de perros PaseoCan">
+          <picture class="hero-photo hero-photo-main">
+            <source media="(max-width: 680px)" srcset="${ASSETS.heroMobile}" type="image/webp">
+            <source srcset="${ASSETS.heroDesktop}" type="image/webp">
+            <img src="${ASSETS.heroDesktopFallback}" alt="Perro feliz durante un paseo" loading="eager">
+          </picture>
+          <img class="hero-photo hero-photo-small one" src="${ASSETS.smallDog}" alt="Perro pequeño registrado en PaseoCan" loading="eager">
+          <img class="hero-photo hero-photo-small two" src="${ASSETS.bigDog}" alt="Perro grande listo para paseo" loading="eager">
+          <div class="floating-card">
+            <strong id="walkCountHero">0</strong>
+            <span>paseos en agenda</span>
+          </div>
+        </div>
       </section>
 
-      <section class="metrics-grid" aria-label="Resumen de PaseoCan">
+      <section class="metrics-grid" aria-label="Resumen de PaseoCan" data-reveal>
         <article class="metric-card">
           <span>Dueños</span>
           <strong id="ownerCount">0</strong>
@@ -220,11 +286,54 @@ function renderShell() {
         </article>
       </section>
 
-      <section id="como-funciona" class="content-section">
+      <section id="destacados" class="storefront-section" data-reveal>
+        <div class="section-heading center">
+          <span class="eyebrow">Servicios destacados</span>
+          <h2>Elegí qué querés hacer hoy.</h2>
+          <p>Un acceso rápido, visual y directo a las acciones principales de PaseoCan.</p>
+        </div>
+        <div class="feature-tiles">
+          <button class="feature-tile large" type="button" data-scroll-target="reserva">
+            <img src="${ASSETS.reserve}" alt="Reservar paseo para perro" loading="lazy">
+            <span>Reserva express</span>
+            <strong>Agendá un paseo</strong>
+          </button>
+          <button class="feature-tile" type="button" data-scroll-target="registros">
+            <img src="${ASSETS.register}" alt="Registro de perro" loading="lazy">
+            <span>Perfiles</span>
+            <strong>Registrá a tu perro</strong>
+          </button>
+          <button class="feature-tile" type="button" data-scroll-target="paseadores">
+            <img src="${ASSETS.walker}" alt="Paseadores disponibles" loading="lazy">
+            <span>Cobertura</span>
+            <strong>Ver paseadores</strong>
+          </button>
+          <button class="feature-tile wide" type="button" data-scroll-target="panel">
+            <img src="${ASSETS.tracking}" alt="Seguimiento de paseo" loading="lazy">
+            <span>Seguimiento</span>
+            <strong>Revisar solicitudes</strong>
+          </button>
+        </div>
+      </section>
+
+      <section class="categories-section" data-reveal>
+        <div class="section-heading compact">
+          <span class="eyebrow">Categorías</span>
+          <h2>Todo el flujo del paseo, ordenado.</h2>
+        </div>
+        <div class="category-grid">
+          <a href="#registros" class="category-card"><span>01</span><strong>Dueños</strong><small>Contacto y zona</small></a>
+          <a href="#registros" class="category-card"><span>02</span><strong>Perros</strong><small>Perfil y cuidados</small></a>
+          <a href="#paseadores" class="category-card"><span>03</span><strong>Paseadores</strong><small>Tarifa y cobertura</small></a>
+          <a href="#reserva" class="category-card"><span>04</span><strong>Paseos</strong><small>Agenda y estado</small></a>
+        </div>
+      </section>
+
+      <section id="como-funciona" class="content-section" data-reveal>
         <div class="section-heading center">
           <span class="eyebrow">Cómo funciona</span>
-          <h2>Reservar un paseo debe sentirse simple.</h2>
-          <p>El flujo está pensado para reducir fricción: primero registrás la información básica, luego solicitás el paseo y finalmente das seguimiento al estado.</p>
+          <h2>Un proceso simple en tres pasos.</h2>
+          <p>Diseñado para que el usuario entienda rápido qué debe hacer y pueda completar la solicitud sin fricción.</p>
         </div>
 
         <div class="steps-grid">
@@ -233,51 +342,49 @@ function renderShell() {
             <div>
               <span>01</span>
               <h3>Registrá a tu perro</h3>
-              <p>Guardá los datos principales de la mascota y las indicaciones que el paseador debe conocer.</p>
+              <p>Guardá datos básicos, comportamiento y notas de cuidado.</p>
             </div>
           </article>
-
           <article class="step-card">
             <img src="${ASSETS.reserve}" alt="Perro caminando con correa en un paseo" loading="lazy">
             <div>
               <span>02</span>
               <h3>Reservá el paseo</h3>
-              <p>Seleccioná fecha, hora, duración, ruta y paseador disponible según la zona.</p>
+              <p>Seleccioná fecha, hora, ruta, duración y paseador.</p>
             </div>
           </article>
-
           <article class="step-card">
             <img src="${ASSETS.tracking}" alt="Dueño revisando el seguimiento de un paseo" loading="lazy">
             <div>
               <span>03</span>
               <h3>Dale seguimiento</h3>
-              <p>Consultá el estado de cada solicitud y mantené el historial centralizado.</p>
+              <p>Consultá estados, agenda y solicitudes desde el panel.</p>
             </div>
           </article>
         </div>
       </section>
 
-      <section class="split-section">
+      <section class="split-section editorial" data-reveal>
         <div class="image-panel">
           <img src="${ASSETS.trust}" alt="Momento de confianza y cuidado entre una persona y un perro" loading="lazy">
         </div>
         <div class="copy-panel">
           <span class="eyebrow">Confianza y orden</span>
-          <h2>Una experiencia pensada para cuidar cada detalle.</h2>
-          <p>La plataforma organiza la información del dueño, el perro, el paseador y la reserva, para que cada paseo tenga contexto y seguimiento.</p>
+          <h2>Una experiencia más clara para dueños y paseadores.</h2>
+          <p>Cada solicitud guarda el contexto necesario: dueño, perro, paseador, horario, ruta, notas y estado.</p>
           <ul class="check-list">
-            <li>Datos del perro y comportamiento esperado.</li>
-            <li>Notas especiales para salud, correa o ruta.</li>
-            <li>Estados claros para cada solicitud.</li>
+            <li>Notas especiales para salud, correa o comportamiento.</li>
+            <li>Estados de solicitud fáciles de entender.</li>
+            <li>Exportación de registros desde el panel interno.</li>
           </ul>
         </div>
       </section>
 
-      <section id="reserva" class="app-section">
+      <section id="reserva" class="app-section" data-reveal>
         <div class="section-heading">
           <span class="eyebrow">Reservas</span>
-          <h2>Gestioná paseos desde un solo lugar.</h2>
-          <p>Completá la información del dueño, registrá al perro y creá la solicitud de paseo.</p>
+          <h2>Creá una solicitud de paseo.</h2>
+          <p>Completá la información del perro, dueño, paseador y horario. Los datos se guardan en AWS cuando el backend está conectado.</p>
         </div>
 
         <div class="workspace-grid">
@@ -285,7 +392,7 @@ function renderShell() {
             <div class="panel-heading">
               <div>
                 <span class="eyebrow">Nuevo paseo</span>
-                <h3>Crear reserva</h3>
+                <h3>Reserva express</h3>
               </div>
               <span class="status-pill">Solicitud</span>
             </div>
@@ -357,7 +464,12 @@ function renderShell() {
         </div>
       </section>
 
-      <section id="registros" class="app-section">
+      <section id="registros" class="app-section" data-reveal>
+        <div class="section-heading">
+          <span class="eyebrow">Registro</span>
+          <h2>Guardá la información esencial.</h2>
+          <p>Primero registrá el dueño; luego asociá uno o varios perros a ese contacto.</p>
+        </div>
         <div class="forms-grid">
           <article class="panel form-panel">
             <div class="panel-heading">
@@ -430,7 +542,7 @@ function renderShell() {
         </div>
       </section>
 
-      <section id="paseadores" class="app-section walkers-app">
+      <section id="paseadores" class="app-section walkers-app" data-reveal>
         <div class="section-heading">
           <span class="eyebrow">Paseadores</span>
           <h2>Administrá disponibilidad y cobertura.</h2>
@@ -478,7 +590,34 @@ function renderShell() {
         <div id="walkerList" class="walker-list"></div>
       </section>
 
-      <section class="cta-section" style="--cta-image: url('${ASSETS.finalCta}')">
+      <section id="blog" class="blog-section" data-reveal>
+        <div class="section-heading center">
+          <span class="eyebrow">Blog</span>
+          <h2>Tips rápidos para mejores paseos.</h2>
+        </div>
+        <div class="blog-grid">
+          <article class="blog-card">
+            <img src="${ASSETS.bigDog}" alt="Perro grande en retrato" loading="lazy">
+            <div class="date-box"><strong>30</strong><span>Abr</span></div>
+            <h3>Cómo preparar a tu perro antes de un paseo nuevo</h3>
+            <p>Checklist básico para que el paseador conozca energía, comportamiento y cuidados.</p>
+          </article>
+          <article class="blog-card">
+            <img src="${ASSETS.smallDog}" alt="Perro pequeño" loading="lazy">
+            <div class="date-box"><strong>01</strong><span>May</span></div>
+            <h3>Qué información debe tener un perfil de mascota</h3>
+            <p>Datos útiles para que cada solicitud sea más segura y fácil de asignar.</p>
+          </article>
+          <article class="blog-card">
+            <img src="${ASSETS.finalCta}" alt="Perro disfrutando al aire libre" loading="lazy">
+            <div class="date-box"><strong>02</strong><span>May</span></div>
+            <h3>Rutas y horarios recomendados según el clima</h3>
+            <p>Ideas para planificar paseos más cómodos en zonas urbanas.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="cta-section" style="--cta-image: url('${ASSETS.finalCta}')" data-reveal>
         <div>
           <span class="eyebrow">Empezá hoy</span>
           <h2>Dejá listo el próximo paseo de tu perro.</h2>
@@ -487,7 +626,7 @@ function renderShell() {
         <button class="primary-btn light" id="bottomBookingButton" type="button">Reservar ahora</button>
       </section>
 
-      <section id="panel" class="panel admin-panel">
+      <section id="panel" class="panel admin-panel" data-reveal>
         <div class="panel-heading">
           <div>
             <span class="eyebrow">Panel interno</span>
@@ -519,14 +658,40 @@ function renderShell() {
       </section>
     </main>
 
-    <footer class="site-footer">
-      <div>
-        <strong>PaseoCan</strong>
-        <span>Gestión simple de paseos para perros.</span>
+    <footer class="site-footer" id="footer">
+      <div class="footer-grid">
+        <div>
+          <a href="#inicio" class="brand footer-brand">
+            <span class="brand-mark">PC</span>
+            <span><strong>PaseoCan</strong><small>Paseos seguros para perros</small></span>
+          </a>
+          <p>Gestión simple de paseos, perfiles y solicitudes para mascotas.</p>
+        </div>
+        <div>
+          <h4>Servicios</h4>
+          <a href="#reserva">Reservar paseo</a>
+          <a href="#registros">Registrar perro</a>
+          <a href="#paseadores">Paseadores</a>
+        </div>
+        <div>
+          <h4>Información</h4>
+          <a href="#como-funciona">Cómo funciona</a>
+          <a href="#blog">Blog</a>
+          <a href="#panel">Panel interno</a>
+        </div>
+        <div>
+          <h4>Contacto</h4>
+          <p>San José, Costa Rica</p>
+          <p>info@paseocan.test</p>
+        </div>
       </div>
-      <a href="#inicio">Volver arriba</a>
+      <div class="footer-bottom">
+        <span>© 2026 PaseoCan. MVP funcional.</span>
+        <a href="#inicio">Volver arriba</a>
+      </div>
     </footer>
 
+    <button class="sticky-mobile-cta" type="button" data-scroll-target="reserva">Reservar paseo</button>
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
   `;
 }
@@ -543,6 +708,8 @@ function bindElements() {
     'dogCount',
     'walkerCount',
     'walkCount',
+    'walkCountHero',
+    'cartBadge',
     'bookingForm',
     'walkDog',
     'walkOwner',
@@ -583,6 +750,16 @@ function bindElements() {
     'ownerList',
     'dogList',
     'requestList',
+    'requestDrawerList',
+    'requestDrawer',
+    'drawerToggle',
+    'drawerClose',
+    'searchToggle',
+    'searchPanel',
+    'searchClose',
+    'searchForm',
+    'siteSearch',
+    'quickReserve',
     'jumpDogRegistration',
     'jumpBooking',
     'bottomBookingButton',
@@ -591,29 +768,53 @@ function bindElements() {
     els[id] = document.getElementById(id);
   });
   els.exportButtons = [...document.querySelectorAll('[data-export]')];
+  els.scrollButtons = [...document.querySelectorAll('[data-scroll-target]')];
+  els.revealItems = [...document.querySelectorAll('[data-reveal]')];
 }
 
 function bindEvents() {
-  els.menuToggle.addEventListener('click', toggleMenu);
-  els.navLinks.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
-  els.seedButton.addEventListener('click', withErrorHandling(seedDemoData));
-  els.refreshButton.addEventListener('click', withErrorHandling(async () => {
+  els.menuToggle?.addEventListener('click', toggleMenu);
+  els.navLinks?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
+  els.seedButton?.addEventListener('click', withErrorHandling(seedDemoData));
+  els.refreshButton?.addEventListener('click', withErrorHandling(async () => {
     await refreshData();
     showToast('Datos actualizados.');
   }));
-  els.ownerForm.addEventListener('submit', withErrorHandling(handleOwnerSubmit));
-  els.dogForm.addEventListener('submit', withErrorHandling(handleDogSubmit));
-  els.walkerForm.addEventListener('submit', withErrorHandling(handleWalkerSubmit));
-  els.bookingForm.addEventListener('submit', withErrorHandling(handleWalkSubmit));
-  els.walkDog.addEventListener('change', syncOwnerFromDog);
-  els.walkWalker.addEventListener('change', renderEstimate);
-  els.walkDuration.addEventListener('change', renderEstimate);
-  els.jumpDogRegistration.addEventListener('click', () => scrollToSection('registros'));
-  els.jumpBooking.addEventListener('click', () => scrollToSection('reserva'));
-  els.bottomBookingButton.addEventListener('click', () => scrollToSection('reserva'));
+  els.ownerForm?.addEventListener('submit', withErrorHandling(handleOwnerSubmit));
+  els.dogForm?.addEventListener('submit', withErrorHandling(handleDogSubmit));
+  els.walkerForm?.addEventListener('submit', withErrorHandling(handleWalkerSubmit));
+  els.bookingForm?.addEventListener('submit', withErrorHandling(handleWalkSubmit));
+  els.walkDog?.addEventListener('change', syncOwnerFromDog);
+  els.walkWalker?.addEventListener('change', renderEstimate);
+  els.walkDuration?.addEventListener('change', renderEstimate);
+  els.jumpDogRegistration?.addEventListener('click', () => scrollToSection('registros'));
+  els.jumpBooking?.addEventListener('click', () => scrollToSection('reserva'));
+  els.bottomBookingButton?.addEventListener('click', () => scrollToSection('reserva'));
+  els.quickReserve?.addEventListener('click', () => scrollToSection('reserva'));
+  els.drawerToggle?.addEventListener('click', () => toggleDrawer(true));
+  els.drawerClose?.addEventListener('click', () => toggleDrawer(false));
+  els.searchToggle?.addEventListener('click', () => toggleSearch(true));
+  els.searchClose?.addEventListener('click', () => toggleSearch(false));
+  els.searchForm?.addEventListener('submit', handleSearchSubmit);
   els.exportButtons.forEach((button) => {
     button.addEventListener('click', () => exportCollection(button.dataset.export));
   });
+  els.scrollButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      toggleDrawer(false);
+      toggleSearch(false);
+      scrollToSection(button.dataset.scrollTarget);
+    });
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      toggleDrawer(false);
+      toggleSearch(false);
+      closeMenu();
+    }
+  });
+  window.addEventListener('scroll', updateHeaderState, { passive: true });
+  initRevealObserver();
 }
 
 async function initDataLayer() {
@@ -705,6 +906,7 @@ function renderAll() {
   renderDogs();
   renderWalkers();
   renderRequests();
+  renderMiniRequests();
 }
 
 function applyDefaults() {
@@ -923,6 +1125,91 @@ function renderRequests() {
   els.requestList.querySelectorAll('[data-action="delete-walk"]').forEach((button) => {
     button.addEventListener('click', withErrorHandling(() => deleteRecord('Walk', button.dataset.id)));
   });
+}
+
+
+function renderMiniRequests() {
+  if (els.cartBadge) els.cartBadge.textContent = state.walks.length;
+  if (els.walkCountHero) els.walkCountHero.textContent = state.walks.length;
+  if (!els.requestDrawerList) return;
+
+  if (!state.walks.length) {
+    els.requestDrawerList.innerHTML = emptyState('Todavía no hay solicitudes.');
+    return;
+  }
+
+  els.requestDrawerList.innerHTML = state.walks
+    .slice(0, 5)
+    .map((walk) => {
+      const dog = findById(state.dogs, walk.dogId);
+      const walker = findById(state.walkers, walk.walkerId);
+      return `
+        <article class="drawer-card">
+          <div class="card-topline">
+            <strong>${escapeHTML(dog?.name ?? 'Perro')}</strong>
+            <span class="status-badge ${statusClass(walk.status)}">${escapeHTML(walk.status ?? 'Pendiente')}</span>
+          </div>
+          <p>${escapeHTML(formatDate(walk.date))} · ${escapeHTML(walk.time ?? '')} · ${escapeHTML(String(walk.duration ?? 0))} min</p>
+          <small>${escapeHTML(walker?.name ?? 'Sin paseador asignado')}</small>
+        </article>
+      `;
+    })
+    .join('');
+}
+
+function toggleDrawer(force) {
+  if (!els.requestDrawer) return;
+  const shouldOpen = typeof force === 'boolean' ? force : !els.requestDrawer.classList.contains('open');
+  els.requestDrawer.classList.toggle('open', shouldOpen);
+}
+
+function toggleSearch(force) {
+  if (!els.searchPanel) return;
+  const shouldOpen = typeof force === 'boolean' ? force : !els.searchPanel.classList.contains('open');
+  els.searchPanel.classList.toggle('open', shouldOpen);
+  if (shouldOpen) setTimeout(() => els.siteSearch?.focus(), 50);
+}
+
+function handleSearchSubmit(event) {
+  event.preventDefault();
+  const query = els.siteSearch.value.trim().toLowerCase();
+  const map = [
+    { terms: ['reserv', 'paseo', 'agenda', 'solicitud'], id: 'reserva' },
+    { terms: ['perro', 'dueño', 'dueno', 'registro', 'mascota'], id: 'registros' },
+    { terms: ['paseador', 'cobertura', 'tarifa'], id: 'paseadores' },
+    { terms: ['panel', 'csv', 'export', 'estado'], id: 'panel' },
+    { terms: ['blog', 'tips', 'consejo'], id: 'blog' },
+  ];
+  const match = map.find((item) => item.terms.some((term) => query.includes(term)));
+  if (match) {
+    toggleSearch(false);
+    scrollToSection(match.id);
+    return;
+  }
+  showToast('Probá buscar: reservar, perro, paseadores, agenda o panel.');
+}
+
+function updateHeaderState() {
+  document.querySelector('.site-header')?.classList.toggle('scrolled', window.scrollY > 12);
+}
+
+function initRevealObserver() {
+  if (!('IntersectionObserver' in window)) {
+    els.revealItems.forEach((item) => item.classList.add('revealed'));
+    return;
+  }
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12 },
+  );
+  els.revealItems.forEach((item) => observer.observe(item));
 }
 
 async function handleOwnerSubmit(event) {
